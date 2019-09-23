@@ -1,7 +1,7 @@
 <div class="container">
   <div class="timer">
     <div class="timer-count">
-      <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.rjust(2, ?0)
+      <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.pad_leading(2, "0")
       %>
     </div>
     <div>

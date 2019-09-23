@@ -4,7 +4,7 @@
       This is LiveView Demo App
     </div>
     <div class="enter-button-wrapper">
-      <%= form_for @conn, Routes.pomodoro_path(@conn, :create), fn f -> %>
+      <%= form_for @conn, Routes.pomodoro_path(@conn, :create), fn _ -> %>
       <%= submit "Create New Pomodoro", class: "button is-primary" %>
       <% end %>
     </div>

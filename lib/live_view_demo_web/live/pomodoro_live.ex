@@ -21,8 +21,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
        seconds: 0,
        changeset: changeset,
        room: session.room,
-       tasks: Pomodoro.list_tasks(session.room.id),
-       current_task_index: 0
+       tasks: Pomodoro.list_tasks(session.room.id)
      )}
   end
 
@@ -30,7 +29,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     room_id = socket.assigns.room.id
 
     case Pomodoro.create_task(task_params |> Map.put("room_id", room_id)) do
-      {:ok, task} ->
+      {:ok, _} ->
         {:noreply,
          socket
          |> assign(tasks: Pomodoro.list_tasks(room_id))}
@@ -106,14 +105,6 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   defp put_timer(%{assigns: %{mode: :long_rest, elapsed: @long_rest_seconds}} = socket),
     do: activate(socket)
 
-  defp activate(socket) do
-    assign(socket,
-      mode: :active,
-      elapsed: 0,
-      seconds: 0
-    )
-  end
-
   defp put_timer(socket) do
     %{assigns: %{elapsed: elapsed, mode: mode}} = socket
 
@@ -123,6 +114,15 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     seconds = rem(mode_seconds - elapsed, 60)
 
     assign(socket, elapsed: elapsed + 1, minutes: minutes, seconds: seconds)
+  end
+
+
+  defp activate(socket) do
+    assign(socket,
+      mode: :active,
+      elapsed: 0,
+      seconds: 0
+    )
   end
 
   defp get_mode_seconds(:active), do: @working_seconds
