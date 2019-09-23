@@ -1,4 +1,26 @@
-<%= form_for @conn, Routes.pomodoro_path(@conn, :create), fn f -> %>
+<div class="container">
+  <div class="enter">
+    <div class="title is-1">
+      This is LiveView Demo App
+    </div>
+    <div class="enter-button-wrapper">
+      <%= form_for @conn, Routes.pomodoro_path(@conn, :create), fn f -> %>
+      <%= submit "Create New Pomodoro", class: "button is-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
 
-    <%= submit "Create New Pomodoro" %>
-<% end %>
+<style>
+  .enter {
+    text-align: center;
+    margin-top: 5rem;
+  }
+
+  .enter-button-wrapper {
+    margin-top: 4rem;
+  }
+  .enter button {
+    font-size: 3rem;
+  }
+</style>

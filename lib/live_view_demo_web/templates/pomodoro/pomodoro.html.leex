@@ -1,39 +1,85 @@
-<div style="display: flex;">
-  <div class="tasks" style="min-width: 45%;">
-    <%= form_for @changeset, "#", [phx_submit: :submit], fn f -> %>
-
-    <div style="display: flex;">
-      <div>
-          <%= text_input f, :name %>
-          <%= error_tag f, :name %>      
-      </div>
-      <div>
-          <%= number_input f, :pomodoro_count %>
-          <%= error_tag f, :pomodoro_count %>      
-      </div>
-    
+<div class="container">
+  <div class="timer">
+    <div class="timer-count">
+      <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.rjust(2, ?0)
+      %>
     </div>
-    <%= submit "Save", phx_disable_with: "Savi  ng..." %>
-    <% end %>
-
-    <div class="task_list">
-        <%= for {task, index} <- Enum.with_index(@tasks) do %>
-        <div class="task <%= task_state_class(@current_task_index, index) %>"><%= task.name %>(<%= task.pomodoro_count %>) <button phx-click="delete_task" phx-value="<%= task.id %>">削除</button> </div>
+    <div>
+      <%= if Enum.count(@tasks) > 0 do %>
+      <button class="button is-primary" type="button" phx-click="start">
+          Start!!
+        </button>          
       <% end %>
     </div>
   </div>
-  <div class="timer">
-    <button type="button" phx-click="start">Start!!</button>
-    <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.rjust(2, ?0) %>
+  <div class="tasks">
+    <div class="task-form">
+      <%= form_for @changeset, "#", [phx_submit: :submit], fn f -> %>
+      <div style="display: flex;">
+        <div class="task-input-wrapper">
+          <%= text_input f, :name, class: "input", placeholder: "Add Task Name" %> <%= error_tag f, :name %>
+        </div>
+        <div>
+          <%= submit "Add", class: :button %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+
+    <div class="task_list">
+      <%= for {task, index} <- Enum.with_index(@tasks) do %>
+      <div class="box <%= task_state_class(@current_pomodoro, index) %>">
+
+        <div class="task">
+          <div><%= task.name %></div>
+          <div>
+              <a
+              href=""
+              phx-click="delete_task"
+              phx-value="<%= task.id %>"
+              ><span class="icon"><i class="fas fa-trash"></i></span
+            ></a>
+          </div>
+
+        </div>
+      </div>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <style>
-.active-task{
-  background: yellow;
-}
-.finished-task{
-  background: gray;
-}
 
+  .tasks {
+    width: 900px;
+    margin: 0 auto;
+  }
+
+  .task-form {
+    margin: 1rem 0;
+  }
+  .task-input-wrapper {
+    width: 80%;
+    margin-right: 1rem;
+  }
+
+  .task {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .active-task {
+    background: #fffdd0;
+  }
+  .finished-task {
+    background: gray;
+  }
+
+  .timer {
+    text-align: center;
+  }
+
+  .timer-count {
+    font-size: 10rem;
+  }
 </style>

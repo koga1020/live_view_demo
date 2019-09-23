@@ -28,10 +28,10 @@ defmodule LiveViewDemoWeb.PomodoroLive do
 
     {:ok,
      assign(socket,
-       mode: :not_yet,
+       mode: :inactive,
        elapsed: 0,
        current_pomodoro: 0,
-       minutes: 0,
+       minutes: 25,
        seconds: 0,
        changeset: changeset,
        room: session.room,
@@ -92,18 +92,6 @@ defmodule LiveViewDemoWeb.PomodoroLive do
        ) do
     finished_pomodoro_count = current_pomodoro + 1
 
-    task_pomodoro_ammount =
-      Enum.map(socket.assigns.tasks, fn task -> task.pomodoro_count end)
-      |> Enum.slice(0..socket.assigns.current_task_index)
-      |> Enum.sum()
-
-    task_index =
-      if task_pomodoro_ammount <= finished_pomodoro_count do
-        task_index = socket.assigns.current_task_index + 1
-      else
-        socket.assigns.current_task_index
-      end
-
     rest_mode =
       case rem(finished_pomodoro_count, 4) do
         0 -> :long_rest
@@ -114,8 +102,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
       mode: rest_mode,
       elapsed: 0,
       seconds: 0,
-      current_pomodoro: finished_pomodoro_count,
-      current_task_index: task_index
+      current_pomodoro: finished_pomodoro_count
     )
   end
 
