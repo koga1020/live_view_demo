@@ -48,3 +48,10 @@
   </div>
 </div>
 
+<script>
+Notification.requestPermission(function(permission) {})
+</script>
+
+<%= if @mode != :inactive do %>
+<%= notification_script(@mode, @notification_id) |> raw() %>
+<% end %>

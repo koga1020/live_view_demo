@@ -13,4 +13,21 @@ defmodule LiveViewDemoWeb.PomodoroView do
         ""
     end
   end
+
+  @message %{
+    active: "start pomodoro!",
+    break: "start short break!",
+    long_break: "start long break!"
+  }
+  def notification_script(mode, notification_id) do
+    message = Map.get(@message, mode)
+
+    """
+      <script id="#{notification_id}">
+      if (Notification.permission === "granted") {
+        new Notification("#{message}");
+      }
+    </script>
+    """
+  end
 end

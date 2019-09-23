@@ -21,7 +21,8 @@ defmodule LiveViewDemoWeb.PomodoroLive do
        seconds: 0,
        changeset: changeset,
        room: session.room,
-       tasks: Pomodoro.list_tasks(session.room.id)
+       tasks: Pomodoro.list_tasks(session.room.id),
+       notification_id: nil
      )}
   end
 
@@ -45,9 +46,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     {:noreply,
      socket
      |> activate()
-     |> assign(
-       current_pomodoro: 0
-     )}
+     |> assign(current_pomodoro: 0)}
   end
 
   def handle_event("delete_task", task_id, socket) do
@@ -97,14 +96,24 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   end
 
   @break_seconds 300
-  defp put_timer(%{assigns: %{mode: :rest, elapsed: @rest_seconds}} = socket),
+  defp put_timer(%{assigns: %{mode: :break, elapsed: @break_seconds}} = socket),
     do: activate(socket)
 
   @long_break_seconds 900
   defp put_timer(%{assigns: %{mode: :long_break, elapsed: @long_break_seconds}} = socket),
     do: activate(socket)
 
+  defp put_timer(%{assigns: %{elapsed: 0}} = socket) do
+    socket
+    |> assign_timer_val()
+    |> assign(notification_id: Ecto.UUID.generate())
+  end
+
   defp put_timer(socket) do
+    assign_timer_val(socket)
+  end
+
+  defp assign_timer_val(socket) do
     %{assigns: %{elapsed: elapsed, mode: mode}} = socket
 
     mode_seconds = get_mode_seconds(mode)
@@ -114,7 +123,6 @@ defmodule LiveViewDemoWeb.PomodoroLive do
 
     assign(socket, elapsed: elapsed + 1, minutes: minutes, seconds: seconds)
   end
-
 
   defp activate(socket) do
     socket
