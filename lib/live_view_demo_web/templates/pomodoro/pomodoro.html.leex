@@ -1,12 +1,12 @@
 <div class="container">
   <div class="timer">
     <div class="timer-count">
-      <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.rjust(2, ?0)
+      <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.pad_leading(2, "0")
       %>
     </div>
     <div>
       <%= if Enum.count(@tasks) > 0 do %>
-      <button class="button is-primary" type="button" phx-click="start">
+      <button class="button is-primary is-large" type="button" phx-click="start">
           Start!!
         </button>          
       <% end %>
@@ -15,7 +15,7 @@
   <div class="tasks">
     <div class="task-form">
       <%= form_for @changeset, "#", [phx_submit: :submit], fn f -> %>
-      <div style="display: flex;">
+      <div class="flex">
         <div class="task-input-wrapper">
           <%= text_input f, :name, class: "input", placeholder: "Add Task Name" %> <%= error_tag f, :name %>
         </div>
@@ -48,38 +48,10 @@
   </div>
 </div>
 
-<style>
+<script>
+Notification.requestPermission(function(permission) {})
+</script>
 
-  .tasks {
-    width: 900px;
-    margin: 0 auto;
-  }
-
-  .task-form {
-    margin: 1rem 0;
-  }
-  .task-input-wrapper {
-    width: 80%;
-    margin-right: 1rem;
-  }
-
-  .task {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .active-task {
-    background: #fffdd0;
-  }
-  .finished-task {
-    background: gray;
-  }
-
-  .timer {
-    text-align: center;
-  }
-
-  .timer-count {
-    font-size: 10rem;
-  }
-</style>
+<%= if @mode != :inactive do %>
+<%= notification_script(@mode, @notification_id) |> raw() %>
+<% end %>
