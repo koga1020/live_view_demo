@@ -1,0 +1,16 @@
+<div style="display: flex;">
+  <div class="tasks" style="min-width: 45%;">
+    <form phx-submit="submit">
+      <div>
+        <input name="task[name]" />
+      </div>
+      <div>
+        <button>Submit</button>
+      </div>
+    </form>
+  </div>
+  <div class="timer">
+    <button type="button" phx-click="start">Start!!</button>
+    <%= @minutes %>：<%= @seconds |> Integer.to_string |> String.rjust(2, ?0) %>
+  </div>
+</div>
