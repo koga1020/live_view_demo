@@ -6,3 +6,40 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/regular";
+
+.tasks {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.task-form {
+  margin: 1rem 0;
+}
+.task-input-wrapper {
+  width: 80%;
+  margin-right: 1rem;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+}
+
+.active-task {
+  background: #fffdd0;
+}
+.finished-task {
+  background: gray;
+}
+
+.timer {
+  text-align: center;
+}
+
+.timer-count {
+  font-size: 10rem;
+}
+
+.flex {
+    display: flex;
+}
