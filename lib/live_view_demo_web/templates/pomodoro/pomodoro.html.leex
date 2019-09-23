@@ -1,13 +1,17 @@
 <div style="display: flex;">
   <div class="tasks" style="min-width: 45%;">
-    <form phx-submit="submit">
-      <div>
-        <input name="task[name]" />
-      </div>
-      <div>
-        <button>Submit</button>
-      </div>
-    </form>
+    <%= form_for @changeset, "#", [phx_submit: :submit], fn f -> %>
+    <%= text_input f, :name %>
+    <%= error_tag f, :name %>
+    <%= number_input f, :pomodoro_count %>
+    <%= error_tag f, :pomodoro_count %>
+    <%= submit "Save", phx_disable_with: "Saving..." %>
+    <% end %>
+
+    <div class="task_list">
+      <%= for task <- @tasks do %> <%= task.name %>(<%= task.pomodoro_count %>)
+      <% end %>
+    </div>
   </div>
   <div class="timer">
     <button type="button" phx-click="start">Start!!</button>

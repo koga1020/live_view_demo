@@ -2,6 +2,8 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   use Phoenix.LiveView
   import Calendar.Strftime
   alias LiveViewDemoWeb.PomodoroView
+  alias LiveViewDemo.Pomodoro
+  alias LiveViewDemo.Pomodoro.Task
 
   @doc """
   ToDo:
@@ -22,18 +24,30 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   end
 
   def mount(_session, socket) do
+    changeset = Pomodoro.change_task(%Task{})
+
     {:ok,
      assign(socket,
        mode: :not_yet,
        elapsed: 0,
        current_pomodoro: 0,
        minutes: 0,
-       seconds: 0
+       seconds: 0,
+       changeset: changeset,
+       tasks: Pomodoro.list_tasks()
      )}
   end
 
-  def handle_event("submit", %{"task" => task_param}, socket) do
-    {:noreply, socket}
+  def handle_event("submit", %{"task" => task_params}, socket) do
+    case Pomodoro.create_task(task_params) do
+      {:ok, task} ->
+        {:noreply,
+         socket
+         |> assign(tasks: Pomodoro.list_tasks())}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
   end
 
   def handle_event("start", _, socket) do
