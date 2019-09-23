@@ -26,6 +26,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
      assign(socket,
        mode: :not_yet,
        elapsed: 0,
+       current_pomodoro: 0,
        minutes: 0,
        seconds: 0
      )}
