@@ -5,20 +5,6 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   alias LiveViewDemo.Pomodoro
   alias LiveViewDemo.Pomodoro.Task
 
-  @doc """
-  ToDo:
-
-  - tasksを入力する
-  - taskになにポモドーロ分実行するか入力する
-  - 上から順に実行される
-    - 順序はdrag & dropで変更できるようにしたい
-  - 回数は一旦固定(25min, 5minを4回 / 15minの休憩)
-  - startを実行
-    - タスクの総数から、総ポモドーロを計算
-    - 現在の実行回数 - (該当タスクのポモドーロ数 - 過去タスクのポモドーロ数) > 0の場合、該当タスクは終了状態とする
-      - 打ち消し線的なUI?
-  """
-
   def render(assigns) do
     PomodoroView.render("pomodoro.html", assigns)
   end
