@@ -9,11 +9,6 @@
   </head>
   <body>
 
-    <header>
-
-
-    </header>
-
     <main>
         <%= render @view_module, @view_template, assigns %>
 
