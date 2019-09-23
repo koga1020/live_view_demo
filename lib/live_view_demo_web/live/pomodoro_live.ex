@@ -23,7 +23,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     PomodoroView.render("pomodoro.html", assigns)
   end
 
-  def mount(_session, socket) do
+  def mount(session, socket) do
     changeset = Pomodoro.change_task(%Task{})
 
     {:ok,
@@ -34,16 +34,19 @@ defmodule LiveViewDemoWeb.PomodoroLive do
        minutes: 0,
        seconds: 0,
        changeset: changeset,
-       tasks: Pomodoro.list_tasks()
+       room: session.room,
+       tasks: Pomodoro.list_tasks(session.room.id)
      )}
   end
 
   def handle_event("submit", %{"task" => task_params}, socket) do
-    case Pomodoro.create_task(task_params) do
+    room_id = socket.assigns.room.id
+
+    case Pomodoro.create_task(task_params |> Map.put("room_id", room_id)) do
       {:ok, task} ->
         {:noreply,
          socket
-         |> assign(tasks: Pomodoro.list_tasks())}
+         |> assign(tasks: Pomodoro.list_tasks(room_id))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

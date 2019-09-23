@@ -1,0 +1,4 @@
+<%= form_for @conn, Routes.pomodoro_path(@conn, :create), fn f -> %>
+
+    <%= submit "Create New Pomodoro" %>
+<% end %>

@@ -19,7 +19,12 @@ defmodule LiveViewDemoWeb.Router do
 
     get "/", PageController, :index
     live "/clock", ClockLive
-    live "/pomodoro", PomodoroLive
+
+    scope "/pomodoro" do
+      get "/new", PomodoroController, :new
+      post "/new", PomodoroController, :create
+      get "/:hash", PomodoroController, :show
+    end
   end
 
   # Other scopes may use custom stacks.

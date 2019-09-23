@@ -5,7 +5,7 @@ defmodule LiveViewDemo.Repo.Migrations.CreateTasks do
     create table(:tasks) do
       add :name, :string
       add :pomodoro_count, :integer
-
+      add :room_id, :integer
       timestamps()
     end
   end
