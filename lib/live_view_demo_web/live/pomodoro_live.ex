@@ -44,9 +44,8 @@ defmodule LiveViewDemoWeb.PomodoroLive do
 
     {:noreply,
      socket
+     |> activate()
      |> assign(
-       mode: :active,
-       elapsed: 0,
        current_pomodoro: 0
      )}
   end
@@ -71,7 +70,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     end
   end
 
-  @working_seconds 1500
+  @working_seconds 3
   defp put_timer(
          %{
            assigns: %{
@@ -97,7 +96,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     )
   end
 
-  @rest_seconds 300
+  @rest_seconds 3
   defp put_timer(%{assigns: %{mode: :rest, elapsed: @rest_seconds}} = socket),
     do: activate(socket)
 
@@ -118,11 +117,13 @@ defmodule LiveViewDemoWeb.PomodoroLive do
 
 
   defp activate(socket) do
-    assign(socket,
+    socket
+    |> assign(
       mode: :active,
       elapsed: 0,
       seconds: 0
     )
+    |> put_flash(:info, "start pomodoro!")
   end
 
   defp get_mode_seconds(:active), do: @working_seconds
