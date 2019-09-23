@@ -1,7 +1,7 @@
-defmodule LiveViewDemoWeb.TabEditorLive do
+defmodule LiveViewDemoWeb.PomodoroLive do
   use Phoenix.LiveView
   import Calendar.Strftime
-  alias LiveViewDemoWeb.EditorView
+  alias LiveViewDemoWeb.PomodoroView
 
   @doc """
   ToDo:
@@ -18,7 +18,7 @@ defmodule LiveViewDemoWeb.TabEditorLive do
   """
 
   def render(assigns) do
-    EditorView.render("editor.html", assigns)
+    PomodoroView.render("pomodoro.html", assigns)
   end
 
   def mount(_session, socket) do
