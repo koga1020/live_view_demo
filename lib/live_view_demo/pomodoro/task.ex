@@ -5,6 +5,7 @@ defmodule LiveViewDemo.Pomodoro.Task do
 
   schema "tasks" do
     field :name, :string
+    field :sort, :integer
     belongs_to :room, Room
 
     timestamps()
@@ -13,7 +14,7 @@ defmodule LiveViewDemo.Pomodoro.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:name, :room_id])
-    |> validate_required([:name, :room_id])
+    |> cast(attrs, [:name, :room_id, :sort])
+    |> validate_required([:name, :room_id, :sort])
   end
 end

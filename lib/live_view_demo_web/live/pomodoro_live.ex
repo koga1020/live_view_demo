@@ -1,6 +1,5 @@
 defmodule LiveViewDemoWeb.PomodoroLive do
   use Phoenix.LiveView
-  import Calendar.Strftime
   alias LiveViewDemoWeb.PomodoroView
   alias LiveViewDemo.Pomodoro
   alias LiveViewDemo.Pomodoro.Task
@@ -28,8 +27,9 @@ defmodule LiveViewDemoWeb.PomodoroLive do
 
   def handle_event("submit", %{"task" => task_params}, socket) do
     room_id = socket.assigns.room.id
+    tasks_count = Enum.count(socket.assigns.tasks)
 
-    case Pomodoro.create_task(task_params |> Map.put("room_id", room_id)) do
+    case Pomodoro.create_task(task_params |> Map.put("room_id", room_id) |> Map.put("sort", tasks_count+1)) do
       {:ok, _} ->
         {:noreply,
          socket
