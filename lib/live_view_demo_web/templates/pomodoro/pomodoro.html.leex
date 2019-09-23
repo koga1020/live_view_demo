@@ -27,23 +27,27 @@
     </div>
 
     <div class="task_list">
-      <%= for {task, index} <- Enum.with_index(@tasks) do %>
-      <div class="box <%= task_state_class(@current_pomodoro, index) %>">
 
+      <%= for {task, index} <- Enum.with_index(@tasks) do %>
+      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= index + 1 %>"></div>
+      <div class="box <%= task_state_class(@current_pomodoro, index) %>" draggable="true" phx-hook="Task" data_task_id="<%= task.id %>">
+        
         <div class="task">
           <div><%= task.name %></div>
           <div>
               <a
               href=""
               phx-click="delete_task"
-              phx-value="<%= task.id %>"
+              phx-value-id="<%= task.id %>"
               ><span class="icon"><i class="fas fa-trash"></i></span
             ></a>
           </div>
 
         </div>
       </div>
+
       <% end %>
+      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= Enum.count(@tasks) + 1%>"></div>
     </div>
   </div>
 </div>

@@ -24,6 +24,7 @@ defmodule LiveViewDemo.Pomodoro do
   def list_tasks(room_id) do
     Task
     |> where(room_id: ^room_id)
+    |> order_by(:sort)
     |> Repo.all()
   end
 
@@ -106,6 +107,45 @@ defmodule LiveViewDemo.Pomodoro do
   """
   def change_task(%Task{} = task) do
     Task.changeset(task, %{})
+  end
+
+  def up_task_sort(room_id, to_move_task, new_sort_index) do
+    tasks_to_down =
+      Task
+      |> where(room_id: ^room_id)
+      |> where([t], t.sort >= ^new_sort_index)
+      |> Repo.update_all(inc: [sort: 1])
+
+    task =
+      to_move_task
+      |> Ecto.Changeset.change(sort: new_sort_index)
+      |> Repo.update()
+  end
+
+  def down_task_sort(room_id, to_move_task, new_sort_index) do
+    old_sort = to_move_task.sort
+
+    query = from t in Task, select: max(t.sort)
+    max_sort = Repo.one(query)
+
+    new_sort_value =
+      if new_sort_index == max_sort + 1 do
+        max_sort
+      else
+        new_sort_index - 1
+      end
+
+    tasks_to_up =
+      Task
+      |> where(room_id: ^room_id)
+      |> where([t], t.sort > ^old_sort)
+      |> where([t], t.sort <= ^new_sort_value)
+      |> Repo.update_all(inc: [sort: -1])
+
+    task =
+      to_move_task
+      |> Ecto.Changeset.change(sort: new_sort_value)
+      |> Repo.update()
   end
 
   alias LiveViewDemo.Pomodoro.Room
