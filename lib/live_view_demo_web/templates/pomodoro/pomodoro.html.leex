@@ -18,9 +18,8 @@
 
     <div class="task_list">
         <%= for task <- @tasks do %>
-        <div class="task">
-            <%= task.name %>(<%= task.pomodoro_count %>)
-      </div>
+        <div class="task"><%= task.name %>(<%= task.pomodoro_count %>) <button phx-click="delete_task" phx-value="<%= task.id %>">削除</button> </div>
+
       <% end %>
     </div>
   </div>

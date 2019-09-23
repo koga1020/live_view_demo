@@ -62,6 +62,16 @@ defmodule LiveViewDemoWeb.PomodoroLive do
      )}
   end
 
+  def handle_event("delete_task", task_id, socket) do
+    task = Pomodoro.get_task!(task_id)
+
+    {:ok, _task} = Pomodoro.delete_task(task)
+
+    {:noreply,
+     socket
+     |> assign(tasks: Pomodoro.list_tasks())}
+  end
+
   def handle_info(:tick, socket) do
     {:noreply, put_timer(socket)}
   end
