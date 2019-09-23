@@ -70,7 +70,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     end
   end
 
-  @working_seconds 3
+  @working_seconds 1500
   defp put_timer(
          %{
            assigns: %{
@@ -96,7 +96,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     )
   end
 
-  @rest_seconds 3
+  @rest_seconds 300
   defp put_timer(%{assigns: %{mode: :rest, elapsed: @rest_seconds}} = socket),
     do: activate(socket)
 
