@@ -1,15 +1,26 @@
 <div style="display: flex;">
   <div class="tasks" style="min-width: 45%;">
     <%= form_for @changeset, "#", [phx_submit: :submit], fn f -> %>
-    <%= text_input f, :name %>
-    <%= error_tag f, :name %>
-    <%= number_input f, :pomodoro_count %>
-    <%= error_tag f, :pomodoro_count %>
-    <%= submit "Save", phx_disable_with: "Saving..." %>
+
+    <div style="display: flex;">
+      <div>
+          <%= text_input f, :name %>
+          <%= error_tag f, :name %>      
+      </div>
+      <div>
+          <%= number_input f, :pomodoro_count %>
+          <%= error_tag f, :pomodoro_count %>      
+      </div>
+    
+    </div>
+    <%= submit "Save", phx_disable_with: "Savi  ng..." %>
     <% end %>
 
     <div class="task_list">
-      <%= for task <- @tasks do %> <%= task.name %>(<%= task.pomodoro_count %>)
+        <%= for task <- @tasks do %>
+        <div class="task">
+            <%= task.name %>(<%= task.pomodoro_count %>)
+      </div>
       <% end %>
     </div>
   </div>
