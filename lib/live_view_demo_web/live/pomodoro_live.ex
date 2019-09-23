@@ -71,13 +71,18 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     room_id = socket.assigns.room.id
     to_move_task = Pomodoro.get_task!(moved_task_id)
 
-    {:ok, tasks} =
-      case to_move_task.sort > new_sort_value do
-        true -> Pomodoro.down_task_sort(room_id, to_move_task, new_sort_value)
-        false -> Pomodoro.up_task_sort(room_id, to_move_task, new_sort_value)
-      end
+    cond do
+      to_move_task.sort + 1 == new_sort_value ->
+        {:noreply, socket}
 
-    {:noreply, socket |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
+      to_move_task.sort > new_sort_value == true ->
+        Pomodoro.down_task_sort(room_id, to_move_task, new_sort_value)
+        {:noreply, socket |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
+
+      to_move_task.sort > new_sort_value == false ->
+        Pomodoro.up_task_sort(room_id, to_move_task, new_sort_value)
+        {:noreply, socket |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
+    end
   end
 
   def handle_info(:tick, socket) do

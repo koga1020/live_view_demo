@@ -27,9 +27,9 @@
     </div>
 
     <div class="task_list">
-      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="0"></div>
 
       <%= for {task, index} <- Enum.with_index(@tasks) do %>
+      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= index + 1 %>"></div>
       <div class="box <%= task_state_class(@current_pomodoro, index) %>" draggable="true" phx-hook="Task" data_task_id="<%= task.id %>">
         
         <div class="task">
@@ -46,8 +46,8 @@
         </div>
       </div>
 
-      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= index+1 %>"></div>
       <% end %>
+      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= Enum.count(@tasks) %>"></div>
     </div>
   </div>
 </div>

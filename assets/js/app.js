@@ -41,7 +41,7 @@ Hooks.TaskDrop = {
     this.el.addEventListener("drop", e => {
       this.el.className = "dropzone";
       let payload = {};
-      payload.new_sort_value = Number(this.el.attributes.data_sort_index.value) + 1;
+      payload.new_sort_value = Number(this.el.attributes.data_sort_index.value);
       payload.moved_task_id = Number(e.dataTransfer.getData("task_id"));
 
       this.pushEvent("sort_task", payload);
