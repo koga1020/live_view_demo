@@ -82,26 +82,26 @@ defmodule LiveViewDemoWeb.PomodoroLive do
        ) do
     finished_pomodoro_count = current_pomodoro + 1
 
-    rest_mode =
+    break_mode =
       case rem(finished_pomodoro_count, 4) do
-        0 -> :long_rest
-        _ -> :rest
+        0 -> :long_break
+        _ -> :break
       end
 
     assign(socket,
-      mode: rest_mode,
+      mode: break_mode,
       elapsed: 0,
       seconds: 0,
       current_pomodoro: finished_pomodoro_count
     )
   end
 
-  @rest_seconds 300
+  @break_seconds 300
   defp put_timer(%{assigns: %{mode: :rest, elapsed: @rest_seconds}} = socket),
     do: activate(socket)
 
-  @long_rest_seconds 900
-  defp put_timer(%{assigns: %{mode: :long_rest, elapsed: @long_rest_seconds}} = socket),
+  @long_break_seconds 900
+  defp put_timer(%{assigns: %{mode: :long_break, elapsed: @long_break_seconds}} = socket),
     do: activate(socket)
 
   defp put_timer(socket) do
@@ -126,6 +126,6 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   end
 
   defp get_mode_seconds(:active), do: @working_seconds
-  defp get_mode_seconds(:rest), do: @rest_seconds
-  defp get_mode_seconds(:long_rest), do: @long_rest_seconds
+  defp get_mode_seconds(:break), do: @break_seconds
+  defp get_mode_seconds(:long_break), do: @long_break_seconds
 end
