@@ -47,7 +47,7 @@
       </div>
 
       <% end %>
-      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= Enum.count(@tasks) %>"></div>
+      <div phx-hook="TaskDrop" class="dropzone" data_sort_index="<%= Enum.count(@tasks) + 1%>"></div>
     </div>
   </div>
 </div>

@@ -75,11 +75,11 @@ defmodule LiveViewDemoWeb.PomodoroLive do
       to_move_task.sort + 1 == new_sort_value ->
         {:noreply, socket}
 
-      to_move_task.sort > new_sort_value == true ->
+      to_move_task.sort < new_sort_value == true ->
         Pomodoro.down_task_sort(room_id, to_move_task, new_sort_value)
         {:noreply, socket |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
 
-      to_move_task.sort > new_sort_value == false ->
+      to_move_task.sort > new_sort_value == true ->
         Pomodoro.up_task_sort(room_id, to_move_task, new_sort_value)
         {:noreply, socket |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
     end
