@@ -123,7 +123,6 @@ defmodule LiveViewDemoWeb.PomodoroLive do
       elapsed: 0,
       seconds: 0
     )
-    |> put_flash(:info, "start pomodoro!")
   end
 
   defp get_mode_seconds(:active), do: @working_seconds
