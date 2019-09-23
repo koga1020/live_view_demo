@@ -77,7 +77,13 @@ defmodule LiveViewDemoWeb.PomodoroLive do
   end
 
   def handle_info(:tick, socket) do
-    {:noreply, put_timer(socket)}
+    update_socket = put_timer(socket)
+
+    if update_socket.assigns.current_pomodoro == Enum.count(update_socket.assigns.tasks) do
+      {:stop, update_socket}
+    else
+      {:noreply, update_socket}
+    end
   end
 
   @working_seconds 1500
