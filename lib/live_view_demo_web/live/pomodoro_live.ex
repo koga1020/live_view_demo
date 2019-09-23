@@ -29,7 +29,11 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     room_id = socket.assigns.room.id
     tasks_count = Enum.count(socket.assigns.tasks)
 
-    case Pomodoro.create_task(task_params |> Map.put("room_id", room_id) |> Map.put("sort", tasks_count+1)) do
+    case Pomodoro.create_task(
+           task_params
+           |> Map.put("room_id", room_id)
+           |> Map.put("sort", tasks_count + 1)
+         ) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -49,7 +53,7 @@ defmodule LiveViewDemoWeb.PomodoroLive do
      |> assign(current_pomodoro: 0)}
   end
 
-  def handle_event("delete_task", task_id, socket) do
+  def handle_event("delete_task", %{"id" => task_id}, socket) do
     task = Pomodoro.get_task!(task_id)
 
     {:ok, _task} = Pomodoro.delete_task(task)
@@ -57,6 +61,23 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     {:noreply,
      socket
      |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
+  end
+
+  def handle_event(
+        "sort_task",
+        %{"moved_task_id" => moved_task_id, "new_sort_value" => new_sort_value},
+        socket
+      ) do
+    room_id = socket.assigns.room.id
+    to_move_task = Pomodoro.get_task!(moved_task_id)
+
+    {:ok, tasks} =
+      case to_move_task.sort > new_sort_value do
+        true -> Pomodoro.down_task_sort(room_id, to_move_task, new_sort_value)
+        false -> Pomodoro.up_task_sort(room_id, to_move_task, new_sort_value)
+      end
+
+    {:noreply, socket |> assign(tasks: Pomodoro.list_tasks(socket.assigns.room.id))}
   end
 
   def handle_info(:tick, socket) do

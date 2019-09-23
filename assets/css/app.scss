@@ -43,3 +43,12 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 .flex {
     display: flex;
 }
+
+.dropzone {
+  height: 5px;
+}
+.dropzone.above {
+  height: 50px;
+  border: 2px dashed gray;
+  margin: 10px 0;
+}
