@@ -41,7 +41,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 }
 
 .flex {
-    display: flex;
+  display: flex;
+}
+.flex.center {
+  justify-content: center;
 }
 
 .dropzone {

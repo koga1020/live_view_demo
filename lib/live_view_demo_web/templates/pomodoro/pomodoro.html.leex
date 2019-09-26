@@ -15,7 +15,7 @@
   <div class="tasks">
     <div class="task-form">
       <%= form_for @changeset, "#", [phx_submit: :submit], fn f -> %>
-      <div class="flex">
+      <div class="flex center">
         <div class="task-input-wrapper">
           <%= text_input f, :name, class: "input", placeholder: "Add Task Name" %> <%= error_tag f, :name %>
         </div>
