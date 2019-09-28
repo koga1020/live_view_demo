@@ -7,6 +7,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 
+.alert-wrapper {
+  margin-top: 2rem;
+}
+
 .tasks {
   width: 900px;
   margin: 0 auto;

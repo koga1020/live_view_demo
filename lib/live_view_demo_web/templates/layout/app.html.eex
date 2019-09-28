@@ -10,8 +10,14 @@
   <body>
 
     <main>
+      <div class="container">
+        <div class="alert-wrapper">
+            <%= if get_flash(@conn, :info) do %>
+            <div class="notification is-primary" role="alert"><strong><%= get_flash(@conn, :info) %></strong></div>          
+            <% end %>    
+        </div>
+      </div>
         <%= render @view_module, @view_template, assigns %>
-
     </main>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
