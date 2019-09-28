@@ -1,9 +1,9 @@
 defmodule LiveViewDemoWeb.PomodoroLive.Show do
   use Phoenix.LiveView
-  alias LiveViewDemoWeb.PomodoroView
   alias LiveViewDemo.Pomodoro
   alias LiveViewDemo.Pomodoro.Task
-  alias DemoWeb.Router.Helpers, as: Routes
+  alias LiveViewDemoWeb.PomodoroView
+  alias LiveViewDemoWeb.Router.Helpers, as: Routes
   alias LiveViewDemoWeb.PomodoroLive
 
   def mount(session, socket) do
@@ -99,7 +99,7 @@ defmodule LiveViewDemoWeb.PomodoroLive.Show do
        update_socket
        |> put_flash(:info, "Finish all pomodoro!")
        |> redirect(
-         to: Routes.live_path(socket, PomodoroLive.Show, update_socket.assigns.room.hash)
+         to: Routes.live_path(update_socket, PomodoroLive.Show, update_socket.assigns.room.hash)
        )}
     else
       {:noreply, update_socket}
