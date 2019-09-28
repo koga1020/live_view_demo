@@ -6,7 +6,7 @@ defmodule LiveViewDemoWeb.Router do
     plug :fetch_session
     plug Phoenix.LiveView.Flash
     plug :fetch_flash
-    # plug :protect_from_forgery
+    plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
@@ -20,11 +20,8 @@ defmodule LiveViewDemoWeb.Router do
     get "/", PageController, :index
     live "/clock", ClockLive
 
-    scope "/pomodoro" do
-      get "/new", PomodoroController, :new
-      post "/new", PomodoroController, :create
-      get "/:hash", PomodoroController, :show
-    end
+    live "/pomodoro/new", PomodoroLive.New
+    live "/pomodoro/:hash", PomodoroLive.Show
   end
 
   # Other scopes may use custom stacks.

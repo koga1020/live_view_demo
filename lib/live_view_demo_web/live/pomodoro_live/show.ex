@@ -1,12 +1,10 @@
-defmodule LiveViewDemoWeb.PomodoroLive do
+defmodule LiveViewDemoWeb.PomodoroLive.Show do
   use Phoenix.LiveView
-  alias LiveViewDemoWeb.PomodoroView
   alias LiveViewDemo.Pomodoro
   alias LiveViewDemo.Pomodoro.Task
-
-  def render(assigns) do
-    PomodoroView.render("pomodoro.html", assigns)
-  end
+  alias LiveViewDemoWeb.PomodoroView
+  alias LiveViewDemoWeb.Router.Helpers, as: Routes
+  alias LiveViewDemoWeb.PomodoroLive
 
   def mount(session, socket) do
     changeset = Pomodoro.change_task(%Task{})
@@ -19,10 +17,18 @@ defmodule LiveViewDemoWeb.PomodoroLive do
        minutes: 25,
        seconds: 0,
        changeset: changeset,
-       room: session.room,
-       tasks: Pomodoro.list_tasks(session.room.id),
        notification_id: nil
      )}
+  end
+
+  def handle_params(%{"hash" => hash}, val, socket) do
+    room = Pomodoro.get_room_by_hash!(hash)
+
+    {:noreply, assign(socket, room: room, tasks: Pomodoro.list_tasks(room.id))}
+  end
+
+  def render(assigns) do
+    PomodoroView.render("show.html", assigns)
   end
 
   def handle_event("submit", %{"task" => task_params}, socket) do
@@ -89,7 +95,12 @@ defmodule LiveViewDemoWeb.PomodoroLive do
     update_socket = put_timer(socket)
 
     if update_socket.assigns.current_pomodoro == Enum.count(update_socket.assigns.tasks) do
-      {:stop, update_socket}
+      {:stop,
+       update_socket
+       |> put_flash(:info, "Finish all pomodoro!")
+       |> redirect(
+         to: Routes.live_path(update_socket, PomodoroLive.Show, update_socket.assigns.room.hash)
+       )}
     else
       {:noreply, update_socket}
     end
